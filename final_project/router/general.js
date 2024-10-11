@@ -40,8 +40,17 @@ public_users.get('/author/:author', function (req, res) {
 
 // Get all books based on title
 public_users.get('/title/:title', function (req, res) {
-  //Write your code here
-  return res.status(300).json({ message: 'Yet to be implemented' })
+  let titleBook
+  const titleName = req.params.title
+
+  Object.keys(books).forEach((key) => {
+    if (books[key].title === titleName) {
+      titleBook = books[key]
+    }
+  })
+  return res
+    .status(300)
+    .json({ message: `Book Title: ${titleName}`, titleBook })
 })
 
 //  Get book review
