@@ -4,6 +4,28 @@ let isValid = require('./auth_users.js').isValid
 let users = require('./auth_users.js').users
 const public_users = express.Router()
 
+// Get all books based on title
+public_users.get('/title/:title', async function (req, res) {
+  let titleBook
+  const titleName = req.params.title
+
+  try {
+    const response = await axios.get('http://localhost:3001/books')
+    const booksData = response.data
+
+    Object.keys(booksData).forEach((key) => {
+      if (booksData[key].title === titleName) {
+        titleBook = booksData[key]
+      }
+    })
+    return res
+      .status(200)
+      .json({ message: `Book Title: ${titleName}`, titleBook })
+  } catch (error) {
+    return res.status(400).send(error)
+  }
+})
+
 // Get book details based on author
 public_users.get('/author/:author', async function (req, res) {
   let authorBooks = []
@@ -54,27 +76,12 @@ public_users.get('/', async function (req, res) {
   }
 })
 
-// Get all books based on title
-public_users.get('/title/:title', function (req, res) {
-  let titleBook
-  const titleName = req.params.title
-
-  Object.keys(books).forEach((key) => {
-    if (books[key].title === titleName) {
-      titleBook = books[key]
-    }
-  })
-  return res
-    .status(300)
-    .json({ message: `Book Title: ${titleName}`, titleBook })
-})
-
 //  Get book review
 public_users.get('/review/:isbn', function (req, res) {
   const isbn = req.params.isbn
   const isbnBookReview = books[isbn].reviews
 
-  return res.status(300).json({
+  return res.status(200).json({
     message: `Review of ${books[isbn].title}: `,
     reviews: isbnBookReview,
   })
