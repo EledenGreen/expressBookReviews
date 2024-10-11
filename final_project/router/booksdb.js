@@ -4,7 +4,11 @@ let books = {
     title: 'Things Fall Apart',
     reviews: { Allen: 'wonderful book', Zed: 'Amazing' },
   },
-  2: { author: 'Hans Christian Andersen', title: 'Fairy tales', reviews: {} },
+  2: {
+    author: 'Hans Christian Andersen',
+    title: 'Fairy tales',
+    reviews: { Teemo: 'great' },
+  },
   3: { author: 'Dante Alighieri', title: 'The Divine Comedy', reviews: {} },
   4: { author: 'Unknown', title: 'The Epic Of Gilgamesh', reviews: {} },
   5: { author: 'Unknown', title: 'The Book Of Job', reviews: {} },
