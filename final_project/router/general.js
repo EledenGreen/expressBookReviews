@@ -4,6 +4,28 @@ let isValid = require('./auth_users.js').isValid
 let users = require('./auth_users.js').users
 const public_users = express.Router()
 
+// Get book details based on author
+public_users.get('/author/:author', async function (req, res) {
+  let authorBooks = []
+  const authorName = req.params.author
+
+  try {
+    const response = await axios.get('http://localhost:3001/books')
+    const booksData = response.data
+
+    Object.keys(booksData).forEach((key) => {
+      if (booksData[key].author === authorName) {
+        authorBooks.push(booksData[key])
+      }
+    })
+    return res
+      .status(200)
+      .json({ message: `Books for the author ${authorName}`, authorBooks })
+  } catch (error) {
+    return res.status(400).send(error)
+  }
+})
+
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn', async function (req, res) {
   const isbn = req.params.isbn
@@ -30,21 +52,6 @@ public_users.get('/', async function (req, res) {
   } catch (error) {
     return res.status(400).send('Error')
   }
-})
-
-// Get book details based on author
-public_users.get('/author/:author', function (req, res) {
-  let authorBooks = []
-  const authorName = req.params.author
-
-  Object.keys(books).forEach((key) => {
-    if (books[key].author === authorName) {
-      authorBooks.push(books[key])
-    }
-  })
-  return res
-    .status(300)
-    .json({ message: `Books for the author ${authorName}`, authorBooks })
 })
 
 // Get all books based on title
